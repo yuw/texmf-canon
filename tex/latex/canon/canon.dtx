@@ -1,0 +1,251 @@
+% \iffalse meta-comment
+%
+% \fi
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \iffalse
+%    \begin{macrocode}
+%<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<package>\ProvidesPackage{canon}
+%<*driver>
+\ProvidesFile{canon.drv}
+%</driver>
+   [2012/02/02 v1.0 style file ``canon.sty''
+%<package>    by KIEDA Yuwsuke]
+%    \end{macrocode}
+%
+% \section{使用するdriverファイル}
+%    \begin{macrocode}
+%<*driver>
+]
+\documentclass{jltxdoc}
+%    \end{macrocode}
+%    \begin{macrocode}
+\EnableCrossrefs
+\setcounter{StandardModuleDepth}{1}
+\GetFileInfo{canon.drv}
+%    \end{macrocode}
+%    \begin{macrocode}
+\begin{document}
+  \DocInput{canon.dtx}
+% ^^A\PrintIndex
+% ^^A\PrintChanges
+\end{document}
+%</driver>
+%    \end{macrocode}
+% \fi
+% \title{\textsf{canon.sty \fileversion{}}
+%  (document version \textsf{v1.0})}
+% \author{%
+% Copyright 2012 by KIEDA Yuwsuke
+% }
+% \date{\filedate}
+% \maketitle
+% \tableofcontents
+% \MakeShortVerb{\|}
+% \StopEventually{} ^^A
+%
+% \section{序}
+% 本スタイルファイル\textsf{canon.sty}は，
+% Jan Tschicholdのいう古典的な欧文組版の版面の
+% “Van de Graaf canon”を実現するものである．
+% 固定長は二つ，|\headheight| (12\,pt)と
+% text blockとmargin columnの間隔(30\,pt)である．
+% \section{パッケージ・オプション}
+% \begin{macro}{a3paper}
+%    \begin{macrocode}
+\DeclareOption{a3paper}{%
+  \paperwidth  297 true mm
+  \paperheight 420 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{a4paper}
+%    \begin{macrocode}
+\DeclareOption{a4paper}{%
+  \paperwidth  210 true mm
+  \paperheight 297 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{a5paper}
+%    \begin{macrocode}
+\DeclareOption{a5paper}{%
+  \paperwidth  148 true mm
+  \paperheight 210 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{a6paper}
+%    \begin{macrocode}
+\DeclareOption{a6paper}{%
+  \paperwidth  105 true mm
+  \paperheight 148 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{jisb3paper}
+%    \begin{macrocode}
+\DeclareOption{jisb3paper}{%
+  \paperwidth  364 true mm
+  \paperheight 515 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{jisb4paper}
+%    \begin{macrocode}
+\DeclareOption{jisb4paper}{%
+  \paperwidth  257 true mm
+  \paperheight 364 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{jisb5paper}
+%    \begin{macrocode}
+\DeclareOption{jisb5paper}{%
+  \paperwidth  182 true mm
+  \paperheight 257 true mm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{jisb5paper}
+%    \begin{macrocode}
+\DeclareOption{jisb6paper}{%
+  \paperwidth  128 true mm
+  \paperheight 182 true mm}
+%    \end{macrocode}
+% \end{macro}
+
+% \begin{macro}{6/9}
+% オプション|6/9|によって，canonを実現する（デフォルト）．
+%    \begin{macrocode}
+\newif\if@six@f@nine \@six@f@ninefalse
+\DeclareOption{6/9}{\@six@f@ninetrue}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{7/10}
+% オプション|7/10|は$6/9$ではなく$7/10$で版面設計を行う．
+%    \begin{macrocode}
+\newif\if@seven@f@ten \@seven@f@tenfalse
+\DeclareOption{7/10}{\@six@f@ninefalse%
+  \@seven@f@tentrue}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{paperwidth}
+% |\paperwidth|を|\textheight|に設定し，
+% 比を保って|\textwidth|を設定する．
+%    \begin{macrocode}
+\newcount\@sqrt@two@M \@sqrt@two@M = 14142
+\newif\if@paperwidth@textwidth \@paperwidth@textwidthfalse
+\DeclareOption{paperwidth}{\@six@f@ninefalse%
+  \@paperwidth@textwidthtrue}
+%    \end{macrocode}
+% \end{macro}
+
+% \section{デフォルト・オプション}
+%    \begin{macrocode}
+\ExecuteOptions{6/9}
+\ProcessOptions
+%    \end{macrocode}
+
+% \section{版面設計}
+% \subsection{天マージン}
+%    \begin{macrocode}
+\headheight 12 true pt
+\maxdepth .5\topskip
+\@tempdima\paperheight
+\if@six@f@nine
+  \divide\@tempdima by 9\relax
+\fi
+\if@seven@f@ten
+  \divide\@tempdima by 10\relax
+\fi
+\if@paperwidth@textwidth
+  \advance\@tempdima -\paperwidth
+  \divide\@tempdima by 3\relax
+\fi
+\topmargin\@tempdima
+\advance\topmargin-\headheight
+\advance\topmargin-\headsep
+\advance\topmargin-1 true in
+%    \end{macrocode}
+
+% \subsection{text block width}
+%    \begin{macrocode}
+\@tempdima\paperwidth
+\if@six@f@nine
+  \divide\@tempdima by 9\relax
+  \textwidth 6\@tempdima
+\fi
+\if@seven@f@ten
+  \textwidth .7\@tempdima
+\fi
+\if@paperwidth@textwidth
+  \divide\@tempdima\@sqrt@two@M
+  \multiply\@tempdima\@M
+  \textwidth\@tempdima
+\fi
+\@settopoint\textwidth
+%    \end{macrocode}
+
+% \subsection{text block height}
+%    \begin{macrocode}
+\@tempdima\paperheight
+\if@six@f@nine
+  \divide\@tempdima by 9\relax
+  \@tempdima 6\@tempdima
+\fi
+\if@seven@f@ten
+  \@tempdima .7\@tempdima
+\fi
+\if@paperwidth@textwidth
+  \@tempdima\paperwidth
+\fi
+\advance\@tempdima -\topskip
+\advance\@tempdima 5 true pt
+\divide\@tempdima \baselineskip
+\@tempcnta\@tempdima
+\textheight\@tempcnta \baselineskip
+\advance\textheight \topskip
+%    \end{macrocode}
+
+% \subsection{side margins}
+%    \begin{macrocode}
+\@tempdima\paperwidth
+\if@six@f@nine
+  \divide\@tempdima by 9\relax
+\fi
+\if@seven@f@ten
+  \divide\@tempdima by 10\relax
+\fi
+\if@paperwidth@textwidth
+  \advance\@tempdima -\textwidth
+  \divide\@tempdima by 3\relax
+\fi
+\evensidemargin 2\@tempdima
+\oddsidemargin \@tempdima
+\advance\evensidemargin -1 true in
+\advance\oddsidemargin -1 true in
+
+\@tempdima\paperwidth
+  \advance\@tempdima -\textwidth
+  \advance\@tempdima -\oddsidemargin
+  \advance\@tempdima -\marginparsep
+  \advance\@tempdima -30 true pt
+\marginparwidth\@tempdima
+\@settopoint\marginparwidth
+%    \end{macrocode}
+%
+% \Finale
+%
+\endinput
